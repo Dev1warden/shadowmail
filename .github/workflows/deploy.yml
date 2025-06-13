@@ -1,0 +1,22 @@
+name: Deploy Production Mail Service
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Deploy with Ansible
+      uses: dawidd6/action-ansible-playbook@v2
+      with:
+        playbook: ansible/provision-mail.yml
+        inventory: ansible/inventory/prod.ini
+        key: ${{ secrets.SSH_KEY }}
+        options: |
+          --extra-vars "environment=production"

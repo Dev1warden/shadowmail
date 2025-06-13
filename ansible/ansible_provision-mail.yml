@@ -1,0 +1,20 @@
+---
+- name: Provision mail server
+  hosts: mailserver
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+    - name: Copy Mailcow env
+      copy:
+        src: ../mailcow/.env
+        dest: /opt/mailcow-dockerized/.env
+    - name: Start mailcow
+      shell: |
+        cd /opt/mailcow-dockerized
+        docker compose up -d

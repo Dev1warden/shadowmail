@@ -1,0 +1,18 @@
+version: "2.1"
+services:
+  mailcow-dockerized:
+    image: mailcow/mailcow-dockerized:latest
+    env_file: ../mailcow/.env
+    restart: always
+    ports:
+      - "25:25"
+      - "465:465"
+      - "587:587"
+      - "993:993"
+      - "995:995"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - mailcow_data:/var/lib/mailcow
+volumes:
+  mailcow_data:
